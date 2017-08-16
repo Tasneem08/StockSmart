@@ -1,0 +1,109 @@
+<html><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Stock Smart - View Trends</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script src = "js/angular-ui-bootstrap-modal.js"></script>
+	<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
+	<script src = "js/angular-chart.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- Bootstrap Core CSS
+    -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/stylish-portfolio.css" rel="stylesheet">
+    <link href="css/stocktrend.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media
+    queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file://
+    -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    
+    
+    <script>
+
+var app = angular.module('myApp', ['ngRoute']);
+
+app.controller('myCtrl', ['$scope','$http', function($scope, $http) 
+{
+	$scope.displayEnergyComps = function()
+	{
+		$http({
+	        method : "POST",
+	        url : "displayEnergyComps",
+	    }).then(function(response) 
+	    	{
+	    	    $scope.person = response.data;
+	    	    var json1 = new Array();
+	    	    var json2 = new Array();
+	            angular.forEach($scope.person,function (value,index)
+	            {
+	            	console.log(value+' '+index);
+	            	json1.push(index);
+	            	json2.push(value);
+	            });
+	            console.log($scope.person);
+	            $scope.label1 = json1;
+	            $scope.data1 = json2;
+    	});
+}
+	
+	$scope.displayEnergyComps();
+}]);
+$( function() {
+    $( "#accordion" ).accordion({
+      collapsible: true,
+      heightStyle: "content"
+    });
+  });
+</script>
+  </head>
+  
+  <body ng-app="myApp" ng-controller="myCtrl" >
+    <!-- Navigation -->
+    <a id="menu-toggle" href="home.html" class="btn btn-dark btn-lg toggle"><i class="fa fa-home"></i></a>
+    
+    <!-- Header -->
+  <header id="top" class="header">
+      <div class="text-vertical-center">
+        <h2>Energy Companies Registered with us !</h2>
+      
+
+  
+  <div class="container">
+
+        <div class="row">
+            <div class="box">
+                <div id="accordion" ng-repeat="x in person">
+                    <h3>{{x[0]}}</h3>
+                    <div> 
+                    <p>CEO : {{x[1]}}</p>
+                    <p>Company url : {{x[2]}}</p>
+                    <p>Revenue : {{x[3]}}</p>
+                    </div>
+                    </div> 
+                
+                <a href="register.html" class="btn btn-light">Register with us to unlock more statistics!!</a>
+               
+                </div>
+                </div>
+                </div>
+                </header>
+  
+
+</body></html>

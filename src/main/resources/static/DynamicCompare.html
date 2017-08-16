@@ -1,0 +1,546 @@
+<html><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Stylish Portfolio - Start Bootstrap Theme</title>
+    <!-- Bootstrap Core CSS
+    -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/stylish-portfolio.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media
+    queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file://
+    -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script src = "js/angular-ui-bootstrap-modal.js"></script>
+	<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
+	<script src = "js/angular-chart.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+    
+      <script>
+
+    var app = angular.module('myApp', ['ngRoute', 'chart.js']);
+
+    app.controller('myCtrl6', ['$scope','$http', function($scope, $http) 
+    {
+    	    
+    	    
+        	
+        	//var temp = new Array();
+        	
+        	$scope.fetchStockSymbols = function()
+    		{
+    			$http({
+    	        	method : "POST",
+    	        	url : "fetchStockSymbols",
+    	    	}).then(function(response) 
+    	    		{
+    	    	    	$scope.person1 = response.data;
+    	    	    	var json = new Array();
+
+    	            	angular.forEach($scope.person1,function (value)
+    	            	{
+    	            		console.log(value);
+    	            		json.push(value);
+    	            	});
+
+    	            	$scope.names = json;
+    	            	
+        		});
+        	}
+        
+        	
+        	
+        	$scope.myFunc = function (val1, val2) {
+        		$scope.data1 = new Array();
+        		$scope.series1 = [val1, val2];
+        		console.log(val1 + "  ,   "+ val2);
+            	$scope.dcompareStocks1(val1);
+            	$scope.dcompareStocks2(val2);
+            	
+        	}
+        	
+        	$scope.myFunc2 = function (val3) {
+        		$scope.data2 = new Array();
+        		$scope.series2 = [val3];
+        		//console.log(val1 + "  ,   "+ val2);
+            	$scope.bollingerStocks1(val3);
+            	$scope.bollingerStocks2(val3);
+            	
+        	}
+        
+        	
+        	$scope.dcompareStocks2 = function(val2)
+        	{
+        		var json3 = new Array();
+            	var json4 = new Array();
+        		$http({
+        	        method : "GET",
+        	        url : "dcompareStocks2",
+        	        params :
+    	        	{
+    	        	'name2' : val2
+    	        	}
+        	    }).then(function(response) 
+        	    	{
+        	    	    $scope.person2 = response.data;
+        	    	    
+        	    	    
+        	    	    angular.forEach($scope.person2,function (value,index)
+        	            {
+        	            	console.log('stocks2--> '+value+' '+index);
+        	            	json3.push(index);
+        	            	json4.push(value);
+        	            });
+        	            
+        	            //$scope.data = [ json2, json4];
+        	            console.log($scope.series1);
+        	            console.log($scope.labels1);
+        				console.log($scope.data1);
+        				$scope.data1.push(json4);
+        				
+        	            
+            	});
+        	}
+        	
+        	$scope.bollingerStocks1 = function(val3)
+        	{
+        		var json5 = new Array();
+            	var json6 = new Array();
+        		$http({
+        	        method : "GET",
+        	        url : "bollingerStocks1",
+        	        params :
+    	        	{
+    	        	'stock1' : val3
+    	        	}
+        	    }).then(function(response) 
+        	    	{
+        	    	    $scope.person3 = response.data;
+        	    	    
+        	    	    
+        	    	    angular.forEach($scope.person3,function (value,index)
+        	            {
+        	            	//console.log('stocks2--> '+value+' '+index);
+        	            	json5.push(index);
+        	            	json6.push(value);
+        	            });
+        	            
+        	            //$scope.data = [ json2, json4];
+         	            console.log($scope.series2);
+         	            console.log($scope.labels2);
+         				console.log($scope.data2);
+        				$scope.data2.push(json6);
+        				
+        	            
+            	});
+        	}
+        	
+        	$scope.getTicker = function()
+        	{
+        	$http({
+        	       method : "POST",
+        	       url : "getTicker",
+        	   }).then(function(response) 
+        	   	{
+        	   	   $scope.person4 = response.data;
+        	   	   $scope.data12 = [];
+        	   	   var json1 = new Array();
+        	   	   var json2 = new Array();
+        	   	   var i=0;
+        	           angular.forEach($scope.person4,function (value,index)
+        	           {
+        	           	//console.log(value+' '+index);
+        	           	json1.push(index);
+        	           	json2.push(value);
+//        	  	           	while(i<10)
+//        	  	           	{
+        	           	$scope.data12[i] =[value];
+        	           	json2=[index];
+        	           	i++;
+        	           	//}
+        	           })
+        	           $scope.label7 = json1;
+        	           $scope.data12=$scope.data12.join(' ');
+        	           $scope.data12 = json2;
+        	   	});
+        	}
+        	
+        	$scope.dcompareStocks1 = function(val1)
+        	{
+        		var json1 = new Array();
+            	var json2 = new Array();
+        		console.log("in ds1 "+ val1);
+        		$http({
+        	        method : "GET",
+        	        url : "dcompareStocks1",
+        	        params :
+        	        	{
+        	        	'name1' : val1
+        	        	}
+        	    }).then(function(response) 
+        	    	{
+        	    	    $scope.person5 = response.data;
+        	    	
+        	    	    
+        	    	    angular.forEach($scope.person6,function (value,index)
+        	            {
+        	            	console.log('stocks1---> '+value+' '+index);
+        	            	json1.push(index);
+        	            	json2.push(value);
+        	            });
+        	    		$scope.labels1 = json1;
+        	    		$scope.data1.push(json2);
+        	    		
+        	    		
+            	});
+        	}
+        	
+        	$scope.bollingerStocks2 = function(val3)
+        	{
+        		var json7 = new Array();
+            	var json8 = new Array();
+        		//console.log("in ds1 "+ val1);
+        		$http({
+        	        method : "GET",
+        	        url : "bollingerStocks2",
+        	        params :
+        	        	{
+        	        	'stock2' : val3
+        	        	}
+        	    }).then(function(response) 
+        	    	{
+        	    	    $scope.person7 = response.data;
+        	    	
+        	    	    
+        	    	    angular.forEach($scope.person7,function (value,index)
+        	            {
+        	            	console.log('stocks1---> '+value+' '+index);
+        	            	json7.push(index);
+        	            	json8.push(value);
+        	            });
+        	    		$scope.labels2 = json7;
+        	    		$scope.data2.push(json8);
+        	    		
+        	    		
+            	});
+        	}
+        	
+        	//$scope.series = ['CVS', 'CA'];
+        	
+        	$scope.fetchStockSymbols();	
+        	$scope.getTicker();
+
+        	
+    	
+    }]);
+
+
+
+</script>
+    
+
+ 
+  </head>
+  
+  
+  <body ng-app="myApp" ng-controller="myCtrl6" >
+    <!-- Navigation -->
+    <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>
+    <nav id="sidebar-wrapper">
+      <ul class="sidebar-nav">
+        <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
+         <li class="sidebar-brand">
+          <a href="Dashboard.html" onclick="$(" "#menu-close").click();=""> <i class="fa fa-tasks" aria-hidden="true"></i>  Dashboard</a>
+        </li>
+<!--         <li class="sidebar-brand"> -->
+<!--           <a href="register.html" onclick="$(" "#menu-close").click();=""> <i class="fa fa-tasks" aria-hidden="true"></i>  My Stocks</a> -->
+<!--         </li> -->
+        <li class="sidebar-brand">
+          <a href="TransDetails.html" onclick="$(" "#menu-close").click();=""> <i class="fa fa-database" aria-hidden="true"></i>  View History</a>
+        </li>
+        <li class="sidebar-brand">
+          <a href="DynamicCompare.html" onclick="$(" "#menu-close").click();=""> <i class="fa fa-bar-chart" aria-hidden="true"></i>  View Stock Trends</a>
+        </li>
+        <li class="sidebar-brand">
+          <a href="Analysts.html" onclick="$(" "#menu-close").click();=""> <i class="fa fa-users" aria-hidden="true"></i>  Get Expert Advice</a>
+        </li>
+        <li class="sidebar-brand">
+          <a href="ManageAccount.html" onclick="$(" "#menu-close").click();=""> <i class="fa fa-tasks" aria-hidden="true"></i>  Manage Account</a>
+        </li>
+        
+        <li class="sidebar-brand">
+          <a href="register.html" onclick="$(" "#menu-close").click();=""> <i class="fa fa-sign-out" aria-hidden="true"></i>  Sign Out</a>
+        </li>
+        
+        <li class="sidebar-brand">
+          <a href="register.html" onclick="$(" "#menu-close").click();=""></a>
+        </li>
+    </nav>
+    <!-- Header -->
+    <header id="top" class="header">
+      <div class="text-vertical-center">
+      
+
+        <h1>Stock Smart</h1>
+        <h3>
+          <i>A smarter way to smarter investments!</i>
+        </h3>
+        <br>
+        <!--       added -->
+<center><b>Closing Prices</b></center>
+<marquee WIDTH=500 HEIGHT=50> 
+
+<div class="row">
+ <div class="col-xs-12">
+    <div class="scrollbar force-overflow" id="style-3">
+
+     <div class="card-header" style = " max-width: 25 px;max-height:25 px" >
+       <ul class="nav nav-tabs tab-stats">
+ <!--        <li  role="tab1" class="active" >{{x}}
+           
+<!--              <canvas id="bar" height = "2.5" width = "5" class="chart chart-line" chart-data="data"  --> 
+<!--                      chart-labels="label7"> --> 
+<!-- </canvas>  -->
+<!--         </li>-->
+         <li role="tab2" ng-repeat="x in person2">
+           <a href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab">{{x[0]}} : {{x[1]}}  </a>
+         </li>
+<!--           <li role="tab2"> -->
+<!--             <a href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab">More <img src = "Capture.JPG">  </a> -->
+<!--           </li> -->
+       </ul>
+     </div>
+ </div>
+ </div>
+</div></marquee>
+<br>
+        <a href="TransDetails.html" class="btn btn-dark btn-lg">View Your Stock Details</a>
+      </div>
+      
+<br><br>
+
+    </header>
+
+		<div class="btn btn-dark btn-lg">
+
+        
+        <a href="#about" class="btn btn-dark btn-lg">SYMBOL 1</a>
+
+		<select ng-model="selectedName1" ng-options="x for x in names">
+
+		</select>
+
+		<h1>Stock1: {{selectedName1}}</h1>
+
+
+		
+		<a href="#about" class="btn btn-dark btn-lg">SYMBOL 2</a>
+
+		<select ng-model="selectedName2" ng-options="x for x in names">
+
+		</select>
+		
+		<h1>Stock2: {{selectedName2}}</h1>
+
+
+		
+		
+		<form ng-submit="myFunc(selectedName1,selectedName2)">
+    		<input type="submit">
+		</form>
+		
+		</div>
+		
+       
+      <div class="container">
+
+        <div class="row">
+                <div class="col-lg-12" >
+					
+					 <strong><h4> Comparison of stocks</strong></h4>
+					<canvas id="bar" height = "2.5" width = "5" class="chart chart-line" chart-data="data" 
+                     chart-labels="labels" chart-series = "series" style= "background-color: white; opacity : 1;">
+					</canvas> 
+					 
+               
+                </div>
+                </div>
+                </div>
+		
+		<br>
+
+<div class="btn btn-dark btn-lg">
+
+        
+        <a href="#about" class="btn btn-dark btn-lg">SYMBOL 1</a>
+
+		<select ng-model="bollingerSym" ng-options="x for x in names">
+
+		</select>
+
+		<h1>Stock1: {{bollingerSym}}</h1>
+
+
+		
+		
+		<form ng-submit="myFunc2(bollingerSym)">
+    		<input type="submit">
+		</form>
+		
+		</div>
+  <div class="container">
+
+        <div class="row">
+                <div class="col-lg-12" >
+					
+					 <strong><h4> Bollinger Band Comparison</strong></h4>
+					<canvas id="bar2" height = "2.5" width = "5" class="chart chart-line" chart-data="data2" 
+                     chart-labels="labels2" chart-series = "series2" style= "background-color: white; opacity : 1;">
+					</canvas> 
+					 
+               
+                </div>
+                </div>
+                </div>
+  
+  
+    
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-10 col-lg-offset-1 text-center">
+            <h4>
+              <strong>Start Bootstrap</strong>
+            </h4>
+            <p>3481 Melrose Place
+              <br>Beverly Hills, CA 90210</p>
+            <ul class="list-unstyled">
+              <li>
+                <i class="fa fa-phone fa-fw"></i>(123) 456-7890</li>
+              <li>
+                <i class="fa fa-envelope-o fa-fw"></i>
+                <a href="mailto:name@example.com">name@example.com</a>
+              </li>
+            </ul>
+            <br>
+            <ul class="list-inline">
+              <li>
+                <a href="#"><i class="fa fa-facebook fa-fw fa-3x"></i></a>
+              </li>
+              <li>
+                <a href="#"><i class="fa fa-twitter fa-fw fa-3x"></i></a>
+              </li>
+              <li>
+                <a href="#"><i class="fa fa-dribbble fa-fw fa-3x"></i></a>
+              </li>
+            </ul>
+            <hr class="small">
+            <p class="text-muted">Copyright © Your Website 2014</p>
+          </div>
+        </div>
+      </div>
+      <a id="to-top" href="#top" class="btn btn-dark btn-lg"><i class="fa fa-chevron-up fa-fw fa-1x"></i></a>
+    </footer>
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script>
+      // Closes the sidebar menu
+            $("#menu-close").click(function(e) {
+                e.preventDefault();
+                $("#sidebar-wrapper").toggleClass("active");
+            });
+            // Opens the sidebar menu
+            $("#menu-toggle").click(function(e) {
+                e.preventDefault();
+                $("#sidebar-wrapper").toggleClass("active");
+            });
+            // Scrolls to the selected menu item on the page
+            $(function() {
+                $('a[href*=#]:not([href=#],[data-toggle],[data-target],[data-slide])').click(function() {
+                    if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
+                        var target = $(this.hash);
+                        target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                        if (target.length) {
+                            $('html,body').animate({
+                                scrollTop: target.offset().top
+                            }, 1000);
+                            return false;
+                        }
+                    }
+                });
+            });
+            //#to-top button appears after scrolling
+            var fixed = false;
+            $(document).scroll(function() {
+                if ($(this).scrollTop() > 250) {
+                    if (!fixed) {
+                        fixed = true;
+                        // $('#to-top').css({position:'fixed', display:'block'});
+                        $('#to-top').show("slow", function() {
+                            $('#to-top').css({
+                                position: 'fixed',
+                                display: 'block'
+                            });
+                        });
+                    }
+                } else {
+                    if (fixed) {
+                        fixed = false;
+                        $('#to-top').hide("slow", function() {
+                            $('#to-top').css({
+                                display: 'none'
+                            });
+                        });
+                    }
+                }
+            });
+            // Disable Google Maps scrolling
+            // See http://stackoverflow.com/a/25904582/1607849
+            // Disable scroll zooming and bind back the click event
+            var onMapMouseleaveHandler = function(event) {
+                var that = $(this);
+                that.on('click', onMapClickHandler);
+                that.off('mouseleave', onMapMouseleaveHandler);
+                that.find('iframe').css("pointer-events", "none");
+            }
+            var onMapClickHandler = function(event) {
+                    var that = $(this);
+                    // Disable the click handler until the user leaves the map area
+                    that.off('click', onMapClickHandler);
+                    // Enable scrolling zoom
+                    that.find('iframe').css("pointer-events", "auto");
+                    // Handle the mouse leave event
+                    that.on('mouseleave', onMapMouseleaveHandler);
+                }
+                // Enable map zooming with mouse scroll when the user clicks the map
+            $('.map').on('click', onMapClickHandler);
+    </script>
+  
+
+</body></html>

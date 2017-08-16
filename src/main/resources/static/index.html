@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+<script>
+
+var app = angular.module('myApp', ['ngRoute']);
+app.controller("myCtrl", function($scope, $http) {
+	$scope.id = 1;
+	$scope.pageSelect = 1;
+	$scope.myWelcome = undefined;
+	$scope.prevEntries = [];
+	
+	$scope.backPage = function() {
+		//$scope.myWelcome = undefined;
+		$scope.pageSelect = 1;
+	}
+
+	
+	$scope.fireSecondPage = function(ssn,name,password)
+	{
+		console.log(ssn);
+		$http({
+	        method : "POST",
+	        url : "secondPage",
+	        data : {
+	        	'ssn' : ssn,
+	        	'login' : name,
+	        	'password' : password
+	        }
+	    }).then(function(response) {
+        	$scope.myWelcome = response.data;
+        	console.log($scope.myWelcome);
+        	$scope.pageSelect = 2;
+        	$scope.id++;
+        	$scope.prevEntries.push(response.data.name);
+    	});
+}
+});
+</script>
+<style>
+a {
+	padding:5px;
+	border:5px solid;
+	border-radius:5px;
+	margin-bottom : 3px;
+}
+#box{
+	margin-top : 3px;
+	padding:10px;
+	border:7px solid;
+	border-radius:5px;
+}
+li{
+	color:blue;
+	font:8px;
+}
+</style>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl" >
+<div class="container">
+<div class="row" >
+	<a class="col-sm-6" href="" ng-click="pageSelect = 1">Page 1</a>
+	<a class="col-sm-6" href="" ng-click="pageSelect = 2">Page 2</a>
+</div>
+<div class = "row"> 
+
+<div ng-if="pageSelect == 1" id="box">
+  SSN : <input type="text" data-ng-model="SSN">
+  Email : <input type="text" data-ng-model="name">
+  Password : <input type="password" data-ng-model="password">
+ <button ng-click="fireSecondPage(SSN,name,password);">Click</button>
+</div>
+
+<div ng-if="pageSelect == 2" id="box">
+  <div><h1 ng-if="myWelcome != undefined">Welcome {{myWelcome.login}}!</h1><h1 ng-if="myWelcome == undefined">Nothing to show here!</h1></div>
+  <button ng-click="backPage();">Back</button>
+ 
+</div>
+</div>
+
+</div>
+</body>
+</html>
